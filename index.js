@@ -82,16 +82,19 @@ const db = {
 
     },
 }
-// console.log(db.find("users", {"age":"50"}));
-// db.create("books", [
-// 	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"},
-// 	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"}
-// ])
-// db.update("books", {
-// 	title: "Learn NodeJS"
-// }, {
-// 	pages: 445
-// })
+console.log(db.find("users", {"age":"50"}));
+
+db.create("books", [
+	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"},
+	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"}
+])
+
+db.update("books", {
+	title: "Learn NodeJS"
+}, {
+	pages: 445
+})
+
 db.remove("users", {
 	country: "China"
 })
