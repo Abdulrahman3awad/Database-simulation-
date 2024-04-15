@@ -56,17 +56,42 @@ const db = {
         });
     },
     remove(col, qry) {
-        // ...
+        fs.readFile("database.json", "utf8", (err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            const dataJs = JSON.parse(data);
+            const newData = dataJs[col].filter(obj => {
+                for (const key in qry) {
+                    if (obj[key] !== qry[key]) {
+                        return true; // Keep the object
+                    }
+                }
+                return false; // Remove the object
+            });
+            dataJs[col] = newData;
+            fs.writeFile("database.json", JSON.stringify(dataJs), (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("The file has been saved!");
+            });
+        });
+
     },
 }
-console.log(db.find("users", {"age":"50"}));
-db.create("books", [
-	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"},
-	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"}
-])
-db.update("books", {
-	title: "Learn NodeJS"
-}, {
-	pages: 445
+// console.log(db.find("users", {"age":"50"}));
+// db.create("books", [
+// 	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"},
+// 	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"}
+// ])
+// db.update("books", {
+// 	title: "Learn NodeJS"
+// }, {
+// 	pages: 445
+// })
+db.remove("users", {
+	country: "China"
 })
-
