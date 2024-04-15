@@ -35,14 +35,38 @@ const db = {
     })
     },
     update(col, qry, upd) {
-        // ...
+        fs.readFile("database.json", "utf8", (err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            const dataJs = JSON.parse(data);
+            for (const obj of dataJs[col]) {
+                if (obj[JSON.stringify(qry).slice(1, -1).split(":")[0].slice(1, -1)] == JSON.stringify(qry).slice(1, -1).split(":")[1].slice(1, -1)) {
+                    obj[JSON.stringify(upd).slice(1, -1).split(":")[0].slice(1, -1)] = JSON.stringify(upd).slice(1, -1).split(":")[1];
+                }
+            }
+            fs.writeFile("database.json", JSON.stringify(dataJs), (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("The file has been saved!");
+            });
+        });
     },
     remove(col, qry) {
         // ...
     },
 }
 console.log(db.find("users", {"age":"50"}));
-console.log(db.create("users", [
+db.create("books", [
 	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"},
 	{"id":uid(),"title":"Learn NodeJS","pages":422,"language":"English","author":"Ahmed Zanaty","category":"Technology"}
-]));
+])
+db.update("books", {
+	title: "Learn NodeJS"
+}, {
+	pages: 445
+})
+
